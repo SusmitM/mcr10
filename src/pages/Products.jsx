@@ -1,17 +1,12 @@
-import { Button, Checkbox, Container, FormControlLabel, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Button, Checkbox, Container, FormControlLabel, Link, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 import { useState } from "react"
 import { useDataContext } from "../Context/DataContext";
 import { useNavigate } from "react-router-dom";
 
 export const Products = () => {
-  const {productData}=useDataContext();
-  //
 
-  const [department,setDepartment]=useState("All Department");
-  const handleDeptChange = (event) => {
-    setDepartment(event.target.value);
-  };
-
+  const {productData,department,setDepartment,handleDeptChange}=useDataContext();
+  
   const [lowStock,setLowStock]=useState(false);
   const handelStockChange=()=>{
     setLowStock(prev=>!prev)
@@ -48,10 +43,10 @@ export const Products = () => {
 
   }
   
-function createData(image,name,description,price,stock,supplier) {
-  return { image,name,description,price,stock,supplier };
+function createData(id,image,name,description,price,stock,supplier) {
+  return { id,image,name,description,price,stock,supplier };
 }
-const rows=filteredData().map(data=>createData(data.imageUrl,data.name,data.description,data.price,data.stock,data.supplier))
+const rows=filteredData().map(data=>createData(data.id,data.imageUrl,data.name,data.description,data.price,data.stock,data.supplier))
   
 const navigate=useNavigate();
   
@@ -113,7 +108,7 @@ const navigate=useNavigate();
               <TableCell component="th" scope="row">
                 <img style={{aspectRatio:"1/1",width:"80px"}} src={row.image} alt={row.name}/>
               </TableCell>
-              <TableCell align="center">{row.name}</TableCell>
+              <TableCell align="center" sx={{cursor:"pointer"}} onClick={()=>navigate(`/productDetails/${row.id}`)}><Link>{row.name}</Link></TableCell>
               <TableCell align="center">{row.description}</TableCell>
               <TableCell align="center">{row.price}</TableCell>
               <TableCell align="center">{row.stock}</TableCell>
